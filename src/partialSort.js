@@ -63,4 +63,51 @@ class MinHeap {
             }
         }
     }
+
+    // 删除最小堆的最小值
+    pop() {
+        if(this.size() === 0) {
+            return null
+        }
+
+        const first = this.data[0]
+        const last = this.data.pop()
+        if(this.size() !== 0) {
+            this.data[0] = last
+            this.siftDown(last, 0)
+        }
+    }
+
+    siftDown(node, i) {
+        let index = i
+        const length = this.size()
+        const halfLength = length >>> 1
+        while(index < halfLength) {
+            const leftIndex = (index + 1) * 2 - 1
+            const rightIndex = leftIndex + 1
+            const left = this.data[leftIndex]
+            const right = this.data[rightIndex]
+            if(this.compare(left, node) < 0) {
+                // left < 父节点
+                if( rightIndex < length && this.compare(right, left) < 0) {
+                    // right < left ，right 最小
+                    this.swap(rightIndex, index)
+                    index = rightIndex
+                } else {
+                    // right >= left，left最小
+                    this.swap(leftIndex, index)
+                    index = leftIndex
+                }
+            } else if(rightIndex < length && this.compare(right, node) < 0) {
+                // left > node, right < node
+                // right 最小
+                this.swap(rightIndex, index)
+                index = rightIndex 
+            } else {
+                // 根节点最小
+                break
+            }
+        }
+    }
+
 }
