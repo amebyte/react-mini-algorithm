@@ -94,6 +94,23 @@ parentIndex = (childIndex - 1) >>> 1
 
 
 
+```javascript
+class MinHeap {
+    constructor(data = []) {
+        // 最小堆
+        this.data = data
+    }
+    
+    size() {
+        return this.data.length
+    }
+    // 获取最小堆的值
+    peek() {
+        return this.size() === 0 ? null : this.data[0]
+    }
+}
+```
+
 节点操作：
 
 1. 获取最小节点 heap[0]
@@ -103,6 +120,8 @@ parentIndex = (childIndex - 1) >>> 1
 
 
 插入元素5
+
+未来保持原先的数据结构不变，可以从尾部插入元素
 
 1. 因为5 < 12，则5与12交换位置，5从底部向上调整
 2. 5 < 7，5与7交换位置，继续往上调整

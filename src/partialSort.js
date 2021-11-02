@@ -46,6 +46,7 @@ class MinHeap {
     // 添加元素
     push(node) {
         this.data.push(node)
+        // 调整位置
         this.siftUp(node, this.size() - 1)
     }
 
