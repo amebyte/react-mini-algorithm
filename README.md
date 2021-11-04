@@ -87,14 +87,10 @@ leftIndex = (parentIndex + 1) * 2 - 1
 rightIndex = leftIndex + 1
 
 
-
 #### 根据子节点下标推算父节点下标：
 
 parentIndex = (childIndex - 1) >>> 1
 
-
-
-#### 
 
 ### 实现一个最小堆
 
@@ -303,7 +299,7 @@ siftDown(node, i) {
 
 ### 实现一道力扣题
 
-#### [703. 数据流中的第 K 大元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
+#### [数据流中的第 K 大元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
 
 设计一个找到数据流中第 k 大元素的类（class）。注意是排序后的第 k 大元素，不是第 k 个不同的元素。
 
