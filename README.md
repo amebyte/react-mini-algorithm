@@ -94,6 +94,8 @@ parentIndex = (childIndex - 1) >>> 1
 
 
 
+#### 
+
 ### 实现一个最小堆
 
 ```javascript
@@ -109,9 +111,9 @@ class MinHeap {
 }
 ```
 
-节点操作：
+#### 节点操作：
 
-#### 获取最小节点 heap[0]
+##### 获取最小节点 heap[0]
 
 假如this.data已经是最小堆了的话，那么this.data[0]就是最小堆的值
 
@@ -122,7 +124,7 @@ peek() {
 }
 ```
 
-#### 插入元素
+##### 插入元素
 
 插入元素5
 
@@ -130,7 +132,25 @@ peek() {
 
  ![](./md/push1.png)
 
-##### 往最小堆里添加元素
+
+
+
+- 因为5 < 12，则5与12交换位置，5从底部向上调整
+
+ ![](./md/push2.png)
+
+
+- 5 < 7，5与7交换位置，继续往上调整
+
+ ![](./md/push3.png)
+
+
+- 5 > 3，停止调整
+
+ ![](./md/push4.png)
+
+
+###### 往最小堆里添加元素
 
 ```javascript
 // 往最小堆里添加元素
@@ -141,13 +161,7 @@ push(node) {
 }
 ```
 
-
-
-- 因为5 < 12，则5与12交换位置，5从底部向上调整
-
- ![](./md/push2.png)
-
-##### 调整位置
+###### 调整位置
 
 ```javascript
 // 往最小堆里添加元素
@@ -179,7 +193,7 @@ siftUp(node, i) {
 
 其实就是index不断变化的过程，调整到最后的时候index最小只能是0。根据上面的公式我们可以找出父节点的下标和父节点然后和当前节点进行对比，看是否需要进行相应的位置调整
 
-##### 比较两个元素
+###### 比较两个元素
 
 ```javascript
 // 比较
@@ -190,11 +204,7 @@ compare(a, b) {
 
 如果compare的结果小于0，则说明a小于b。另外将比较的过程单独抽离成一个函数可以方便以后进行修改，比如将来a和b不是两个数字了，而是两个对象，则可以很方便进行修改`a.sort`-`b.sort`
 
-- 5 < 7，5与7交换位置，继续往上调整
-
- ![](./md/push3.png)
-
-##### 交换元素
+###### 交换元素
 
 ```javascript
 // 交换两个变量的值
@@ -209,13 +219,7 @@ swap(index1, index2) {
 
 
 
-- 5 > 3，停止调整
-
- ![](./md/push4.png)
-
-
-
-#### 删除元素
+##### 删除元素
 
 - 先取heap[0]
 
@@ -245,9 +249,86 @@ swap(index1, index2) {
 
  ![](./md/pop5.png)
 
+###### 删除最小堆的最小值 
 
+```javascript
+// 删除最小堆的最小值
+pop() {
+    if(this.size() === 0) {
+        return null
+    }
 
+    const first = this.data[0]
+    const last = this.data.pop()
+    // if(first !== last) {
+    if(this.size() !== 0) {
+        this.data[0] = last
+        // 向下调整
+        this.siftDown(last, 0)
+    }
+}
 
+siftDown(node, i) {
+    let index = i
+    const length = this.size()
+    const halfLength = length >>> 1
+    while(index < halfLength) {
+        const leftIndex = (index + 1) * 2 - 1
+        const rightIndex = leftIndex + 1
+        const left = this.data[leftIndex]
+        const right = this.data[rightIndex]
+        if(this.compare(left, node) < 0) {
+            // left < 父节点
+            if( rightIndex < length && this.compare(right, left) < 0) {
+                // right < left ，right 最小
+                this.swap(rightIndex, index)
+                index = rightIndex
+            } else {
+                // right >= left，left最小
+                this.swap(leftIndex, index)
+                index = leftIndex
+            }
+        } else if(rightIndex < length && this.compare(right, node) < 0) {
+            // left > node, right < node
+            // right 最小
+            this.swap(rightIndex, index)
+            index = rightIndex 
+        } else {
+            // 根节点最小
+            break
+        }
+    }
+}
+```
+
+### 实现一道力扣题
+
+#### [703. 数据流中的第 K 大元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
+
+设计一个找到数据流中第 k 大元素的类（class）。注意是排序后的第 k 大元素，不是第 k 个不同的元素。
+
+请实现 KthLargest 类：
+
+KthLargest(int k, int[] nums) 使用整数 k 和整数流 nums 初始化对象。
+int add(int val) 将 val 插入数据流 nums 后，返回当前数据流中第 k 大的元素。
+
+**示例：** 
+
+```
+输入：
+["KthLargest", "add", "add", "add", "add", "add"]
+[[3, [4, 5, 8, 2]], [3], [5], [10], [9], [4]]
+输出：
+[null, 4, 5, 5, 8, 8]
+
+解释：
+KthLargest kthLargest = new KthLargest(3, [4, 5, 8, 2]);
+kthLargest.add(3);   // return 4
+kthLargest.add(5);   // return 5
+kthLargest.add(10);  // return 5
+kthLargest.add(9);   // return 8
+kthLargest.add(4);   // return 8
+```
 
 
 
