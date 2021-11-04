@@ -102,7 +102,7 @@ class MinHeap {
         // 最小堆
         this.data = data
     }
-    
+    // 计算长度
     size() {
         return this.data.length
     }
@@ -111,7 +111,7 @@ class MinHeap {
 
 节点操作：
 
-1. 获取最小节点 heap[0]
+#### 获取最小节点 heap[0]
 
 假如this.data已经是最小堆了的话，那么this.data[0]就是最小堆的值
 
@@ -122,13 +122,24 @@ peek() {
 }
 ```
 
-2. 插入元素
+#### 插入元素
 
 插入元素5
 
-未来保持原先的数据结构不变，可以从尾部插入元素
+要确保原先的数据结构不变，可以从尾部插入元素
 
  ![](./md/push1.png)
+
+##### 往最小堆里添加元素
+
+```javascript
+// 往最小堆里添加元素
+push(node) {
+    this.data.push(node)
+    // 调整位置
+    this.siftUp(node, this.size() - 1)
+}
+```
 
 
 
@@ -136,11 +147,65 @@ peek() {
 
  ![](./md/push2.png)
 
+##### 调整位置
 
+```javascript
+// 往最小堆里添加元素
+push(node) {
+    this.data.push(node)
+    // 调整位置
+    this.siftUp(node, this.size() - 1)
+}
+
+siftUp(node, i) {
+    let index = i
+    while(index > 0) {
+        // 父节点下标
+        const parentIndex = (index -1) >>> 1 // 位运算相当于 除以2
+        // 父节点
+        const parent = this.data[parentIndex]
+        // 是否需要进行相应的位置调整
+        if(this.compare(node, parent) < 0) {
+            // 子节点 < 父节点
+            this.swap(index, parentIndex)
+            // 调整之后的节点下标
+            index = parentIndex
+        } else {
+            break
+        }
+    }
+}
+```
+
+其实就是index不断变化的过程，调整到最后的时候index最小只能是0。根据上面的公式我们可以找出父节点的下标和父节点然后和当前节点进行对比，看是否需要进行相应的位置调整
+
+##### 比较两个元素
+
+```javascript
+// 比较
+compare(a, b) {
+    return a - b
+}
+```
+
+如果compare的结果小于0，则说明a小于b。另外将比较的过程单独抽离成一个函数可以方便以后进行修改，比如将来a和b不是两个数字了，而是两个对象，则可以很方便进行修改`a.sort`-`b.sort`
 
 - 5 < 7，5与7交换位置，继续往上调整
 
  ![](./md/push3.png)
+
+##### 交换元素
+
+```javascript
+// 交换两个变量的值
+swap(index1, index2) {
+    // [a, b] = [b, a]
+    [this.data[index1], this.data[index2]] = [
+        this.data[index2],
+        this.data[index1]
+    ]
+}
+```
 
 
 
@@ -150,7 +215,7 @@ peek() {
 
 
 
-3. 删除元素
+#### 删除元素
 
 - 先取heap[0]
 

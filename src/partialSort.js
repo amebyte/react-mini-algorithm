@@ -20,11 +20,11 @@ class MinHeap {
         // 最小堆
         this.data = data
     }
-
+    // 计算长度
     size() {
         return this.data.length
     }
-
+    // 比较
     compare(a, b) {
         return a - b
     }
